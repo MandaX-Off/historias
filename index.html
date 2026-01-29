@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moon Studios - Historias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-bg-deep: #05050a;
+            --color-bg-card: #0f0f1a;
+            --color-bg-modal: rgba(10, 10, 24, 0.95);
+            --color-text-main: #f6f6f6;
+            --color-text-dim: #b5b5c3;
+            --color-blue: #4aaaff;
+            --color-red: #ff4a4a;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glow-blue: 0 0 25px rgba(74, 170, 255, 0.2);
+            --glow-red: 0 0 25px rgba(255, 74, 74, 0.2);
+            --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Reset & Base */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--color-bg-deep);
+            color: var(--color-text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- HEADER --- */
+        .app-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            background: rgba(5, 5, 10, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--color-red);
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .header-brand:hover .header-logo { transform: rotate(15deg) scale(1.1); box-shadow: var(--glow-red); }
+
+        .app-title {
+            font-size: 1.1em;
+            letter-spacing: 2px;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #fff, var(--color-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            height: 65vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, rgba(74, 170, 255, 0.08) 0%, transparent 70%),
+                        linear-gradient(to bottom, transparent, var(--color-bg-deep)),
+                        url('perfil.png') center/cover fixed;
+        }
+
+        .hero p {
+            color: var(--color-red);
+            letter-spacing: 8px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            font-size: 0.75em;
+            text-shadow: 0 0 15px rgba(255, 74, 74, 0.4);
+            animation: fadeInDown 1.2s ease-out;
+        }
+
+        .hero h2 {
+            font-size: clamp(2.2em, 8vw, 4.5em);
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            font-weight: 900;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        /* --- CONTROLES --- */
+        .controls-container {
+            max-width: 1200px;
+            margin: -50px auto 40px;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-wrapper {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            background: rgba(15, 15, 26, 0.8);
+            border: 1px solid var(--glass-border);
+            padding: 18px 30px;
+            border-radius: 25px;
+            color: white;
+            outline: none;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            backdrop-filter: blur(10px);
+        }
+
+        .search-bar:focus {
+            border-color: var(--color-blue);
+            box-shadow: var(--glow-blue);
+            transform: translateY(-2px);
+            background: rgba(20, 20, 35, 0.95);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--color-text-dim);
+            padding: 10px 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-weight: 700;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+        .filter-btn.active {
+            background: var(--color-blue);
+            color: #05050a;
+            border-color: var(--color-blue);
+            box-shadow: 0 8px 20px rgba(74, 170, 255, 0.3);
+        }
+
+        /* --- GRID DE HISTORIAS --- */
+        .app-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 40px 100px;
+            transition: filter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--color-text-dim);
+            letter-spacing: 8px;
+            font-size: 0.9em;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            opacity: 0.4;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 35px;
+        }
+
+        .story-card {
+            position: relative;
+            height: 420px;
+            border-radius: 35px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: var(--transition-smooth);
+            background-color: #080810;
+        }
+
+        .card-image-bg {
+            position: absolute;
+            inset: 0;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .story-card:hover .card-image-bg { transform: scale(1.1); }
+
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, 
+                rgba(5, 5, 10, 0.95) 0%, 
+                rgba(5, 5, 10, 0.4) 50%, 
+                transparent 100%);
+            z-index: 1;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 30px;
+            width: 100%;
+        }
+
+        .story-card h3 {
+            font-size: 1.4em;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .story-card:hover {
+            transform: translateY(-12px);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .card-blue:hover { box-shadow: 0 25px 50px rgba(74, 170, 255, 0.15); }
+        .card-red:hover { box-shadow: 0 25px 50px rgba(255, 74, 74, 0.15); }
+
+        /* Badge */
+        .badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.65em;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            z-index: 3;
+            backdrop-filter: blur(5px);
+        }
+
+        .status-continua { background: rgba(74, 170, 255, 0.1); color: var(--color-blue); border: 1px solid var(--color-blue); }
+        .status-cancelado { background: rgba(255, 74, 74, 0.1); color: var(--color-red); border: 1px solid var(--color-red); }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active { display: flex; opacity: 1; }
+
+        .modal-content {
+            width: 100%;
+            max-width: 700px;
+            background: var(--color-bg-modal);
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .modal-content { transform: scale(1); }
+
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+        .modal-header-img {
+            width: 100%;
+            height: 300px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .modal-body { padding: 45px; }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-smooth);
+            display: grid; place-items: center;
+        }
+
+        .close-btn:hover { background: var(--color-red); transform: rotate(90deg); }
+
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .chapter-link {
+            text-decoration: none;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--color-text-dim);
+            padding: 15px 10px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85em;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .chapter-link:hover {
+            background: var(--color-blue);
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: var(--glow-blue);
+        }
+
+        .new-label {
+            position: absolute;
+            top: -8px;
+            right: -5px;
+            background: var(--color-blue);
+            color: #000;
+            font-size: 0.55em;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 900;
+            animation: pulse 2s infinite;
+        }
+
+        /* Footer Section */
+        .main-footer {
+            padding: 80px 20px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-logo { width: 60px; opacity: 0.3; margin-bottom: 20px; transition: 0.4s; }
+        .footer-logo:hover { opacity: 1; filter: drop-shadow(0 0 10px var(--color-blue)); }
+
+        .blurred { filter: blur(25px) scale(0.98); pointer-events: none; }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        @media (max-width: 768px) {
+            .app-container { padding: 20px 20px 60px; }
+            .story-grid { grid-template-columns: 1fr; }
+            .hero h2 { letter-spacing: 6px; }
+            .modal-body { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <a href="#" class="header-brand" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">
+        <img src="perfil.png" class="header-logo" alt="Logo">
+        <h1 class="app-title">Moon Studios</h1>
+    </a>
+</header>
+
+<section class="hero">
+    <p>DIGITAL CREATIVE STUDIO</p>
+    <h2>Moon Studios</h2>
+</section>
+
+<div class="controls-container">
+    <div class="search-wrapper">
+        <input type="text" id="storySearch" class="search-bar" placeholder="Buscar historias o capítulos..." aria-label="Buscar historias">
+    </div>
+    <div class="filter-group">
+        <button class="filter-btn active" data-filter="Todos">Todos</button>
+        <button class="filter-btn" data-filter="Continua">En curso</button>
+        <button class="filter-btn" data-filter="Cancelado">Finalizados</button>
+    </div>
+</div>
+
+<main class="app-container" id="main-content">
+    <h2 class="section-title">Biblioteca Multimedia</h2>
+    <div class="story-grid" id="story-grid">
+        </div>
+</main>
+
+<footer class="main-footer">
+    <img src="perfil.png" class="footer-logo" alt="Logo">
+    <p style="font-size: 0.7em; color: var(--color-text-dim); letter-spacing: 2px;">© 2026 MOON STUDIOS. TODOS LOS DERECHOS RESERVADOS.</p>
+</footer>
+
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-content">
+        <button class="close-btn" id="close-modal" aria-label="Cerrar">&times;</button>
+        <div id="modal-render-area"></div>
+    </div>
+</div>
+
+<script>
+/**
+ * APP STATE & DATA
+ */
+const stories = [
+    {
+        title: "Cadenas de Oro y Deseo",
+        status: "Cancelado",
+        theme: "card-red",
+        image: "image_baab5b.png",
+        bgSize: "cover",
+        footerNote: "Historia Finalizada por Cancelación",
+        chapters: [
+            { name: "Cap 1", url: "https://www.wattpad.com/1578861356" },
+            { name: "Cap 2", url: "https://www.wattpad.com/1578892918" },
+            { name: "Cap 3", url: "https://www.wattpad.com/1579040883" },
+            { name: "Cap 4", url: "https://www.wattpad.com/1579335888" },
+            { name: "Cap 5", url: "https://www.wattpad.com/1579548678" },
+            { name: "Cap 6", url: "https://www.wattpad.com/1579742891" },
+            { name: "Cap 7", url: "https://www.wattpad.com/1579971901" },
+            { name: "Cap 8", url: "https://www.wattpad.com/1580197830" },
+            { name: "Cap 9", url: "https://www.wattpad.com/1580374507" },
+            { name: "Cap 10", url: "https://www.wattpad.com/1580531083" },
+            { name: "Cap 11", url: "https://www.wattpad.com/1580939428" },
+            { name: "Cap 12", url: "https://www.wattpad.com/1581421520" },
+            { name: "Cap 13", url: "https://www.wattpad.com/1581808824" },
+            { name: "Cap 14", url: "https://www.wattpad.com/1591988041" },
+            { name: "Cap 15", url: "https://www.wattpad.com/1592080465" },
+            { name: "Cap 16", url: "https://www.wattpad.com/1592625152" },
+            { name: "Anuncio", url: "https://www.wattpad.com/1596628662", special: true }
+        ]
+    },
+    {
+        title: "Cero Absoluto",
+        status: "Continua",
+        theme: "card-blue",
+        image: "Logo.png",
+        bgSize: "contain",
+        footerNote: "Próximo capítulo: Jueves 29 de Enero",
+        chapters: [
+            { name: "Cap 0", url: "https://www.wattpad.com/1605174608" },
+            { name: "Cap 1", url: "https://www.wattpad.com/1605380294" },
+            { name: "Cap 2", url: "https://www.wattpad.com/1605391156", isNew: true }
+        ]
+    }
+];
+
+const DOM = {
+    grid: document.getElementById("story-grid"),
+    search: document.getElementById("storySearch"),
+    filters: document.querySelectorAll(".filter-btn"),
+    modal: document.getElementById("modal-overlay"),
+    modalArea: document.getElementById("modal-render-area"),
+    main: document.getElementById("main-content"),
+    closeModal: document.getElementById("close-modal")
+};
+
+let state = {
+    filter: 'Todos',
+    query: ''
+};
+
+/**
+ * CORE FUNCTIONS
+ */
+function init() {
+    render();
+    setupEventListeners();
+}
+
+function render() {
+    DOM.grid.innerHTML = "";
+    
+    const filtered = stories.filter(s => {
+        const matchesFilter = state.filter === 'Todos' || s.status === state.filter;
+        const matchesSearch = s.title.toLowerCase().includes(state.query.toLowerCase());
+        return matchesFilter && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+        DOM.grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 100px 20px; color: var(--color-text-dim);">
+            No se encontraron resultados para tu búsqueda.
+        </div>`;
+        return;
+    }
+
+    filtered.forEach((story, i) => {
+        const card = document.createElement("article");
+        card.className = `story-card ${story.theme}`;
+        card.style.animation = `fadeInUp 0.6s ease-out forwards ${i * 0.1}s`;
+        
+        card.innerHTML = `
+            <div class="card-image-bg" style="
+                background-image: url('${story.image}'); 
+                background-size: ${story.bgSize};
+                background-repeat: no-repeat;
+                background-position: center;
+            "></div>
+            <div class="card-overlay"></div>
+            <span class="badge ${story.status === 'Cancelado' ? 'status-cancelado' : 'status-continua'}">${story.status}</span>
+            <div class="card-content">
+                <h3>${story.title}</h3>
+            </div>
+        `;
+
+        card.addEventListener('click', () => openModal(story));
+        DOM.grid.appendChild(card);
+    });
+}
+
+function openModal(story) {
+    const isCancel = story.status === "Cancelado";
+    
+    const chaptersHTML = story.chapters.map(ch => `
+        <a href="${ch.url}" target="_blank" rel="noopener" class="chapter-link" 
+           style="${ch.special ? 'border-color: var(--color-red); color: var(--color-red);' : ''}">
+            ${ch.isNew ? '<span class="new-label">NUEVO</span>' : ''}
+            ${ch.name}
+        </a>
+    `).join("");
+
+    DOM.modalArea.innerHTML = `
+        <div class="modal-header-img" style="
+            background-image: url('${story.image}'); 
+            background-size: ${story.bgSize};
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgba(0,0,0,0.2);
+            height: 300px; width: 100%;
+        "></div>
+        <div class="modal-body">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="font-size: 2em; margin-bottom: 10px;">${story.title}</h2>
+                <span class="badge ${isCancel ? 'status-cancelado' : 'status-continua'}" style="position: static;">${story.status}</span>
+            </div>
+            
+            <p style="text-transform: uppercase; font-size: 0.7em; font-weight: 800; color: var(--color-blue); letter-spacing: 2px; margin-bottom: 15px; text-align: center;">
+                Capítulos Disponibles
+            </p>
+            
+            <div class="chapters-grid">${chaptersHTML}</div>
+            
+            <div style="margin-top: 30px; padding: 20px; border-radius: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); text-align: center; font-weight: 700; color: ${isCancel ? 'var(--color-red)' : 'var(--color-blue)'}">
+                ${story.footerNote}
+            </div>
+        </div>
+    `;
+
+    DOM.modal.classList.add("active");
+    DOM.main.classList.add("blurred");
+    document.body.style.overflow = "hidden";
+}
+
+function closeModal() {
+    DOM.modal.classList.remove("active");
+    DOM.main.classList.remove("blurred");
+    document.body.style.overflow = "auto";
+}
+
+function setupEventListeners() {
+    // Búsqueda
+    DOM.search.addEventListener('input', (e) => {
+        state.query = e.target.value;
+        render();
+    });
+
+    // Filtros
+    DOM.filters.forEach(btn => {
+        btn.addEventListener('click', () => {
+            DOM.filters.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.filter = btn.dataset.filter;
+            render();
+        });
+    });
+
+    // Cerrar Modal
+    DOM.closeModal.addEventListener('click', closeModal);
+    DOM.modal.addEventListener('click', (e) => { if(e.target === DOM.modal) closeModal(); });
+    window.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+}
+
+// Iniciar aplicación
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
